@@ -7,7 +7,7 @@ import java.util.Map;
 
 /* Interface pour gérer la connexion à différents types de bases de données
  * et exécuter des requêtes SQL */
-public interface DatabaseManager {
+public interface DatabaseManager extends AutoCloseable {
     Connection connect() throws SQLException;
     void disconnect() throws SQLException;
     /* Execute une requete SQL de type SELECT */

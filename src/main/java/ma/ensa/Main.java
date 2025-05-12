@@ -13,43 +13,42 @@ public class Main {
     private static final String TABLE_NAME = "personnes";
 
     public static void main(String[] args) {
+        // Charger la configuration
         try {
-            // Charger la configuration
             DBConfigLoader configLoader = new DBConfigLoader("db.properties");
             DatabaseManagerFactory factory = new DatabaseManagerFactory(configLoader);
 
-            // Obtenir le gestionnaire de base de données par défaut
-            DatabaseManager dbManager = factory.createDatabaseManager("oracle");
-            System.out.println("Connexion à la base de données établie.");
+            // Utilisation de try-with-resources pour gérer la fermeture automatique
+            try (DatabaseManager dbManager = factory.createDatabaseManager("oracle")) {
+                System.out.println("Connexion à la base de données établie.");
 
-            // Créer une table de test si elle n'existe pas
-            createTestTable(dbManager);
+                // Créer une table de test si elle n'existe pas
+                createTestTable(dbManager);
 
-            // Insérer des données de test
-            insertTestData(dbManager);
+                // Insérer des données de test
+                insertTestData(dbManager);
 
-            // Afficher toutes les données
-            displayAllData(dbManager);
+                // Afficher toutes les données
+                displayAllData(dbManager);
 
-            // Mettre à jour des données
-            updateData(dbManager);
+                // Mettre à jour des données
+                updateData(dbManager);
 
-            // Afficher les données après mise à jour
-            displayAllData(dbManager);
+                // Afficher les données après mise à jour
+                displayAllData(dbManager);
 
-            // Supprimer des données
-            deleteData(dbManager);
+                // Supprimer des données
+                deleteData(dbManager);
 
-            // Afficher les données après suppression
-            displayAllData(dbManager);
+                // Afficher les données après suppression
+                displayAllData(dbManager);
 
-            // Test de transaction
-            testTransaction(dbManager);
+                // Test de transaction
+                testTransaction(dbManager);
 
-            // Fermer la connexion
-            dbManager.disconnect();
-            System.out.println("Connexion fermée avec succès.");
-
+                // La connexion sera fermée automatiquement à la fin du bloc try-with-resources
+                System.out.println("Fin du programme, la connexion sera fermée automatiquement.");
+            } // dbManager.close() est appelé implicitement ici
         } catch (Exception e) {
             System.err.println("Erreur: " + e.getMessage());
             e.printStackTrace();

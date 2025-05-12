@@ -59,22 +59,16 @@ public abstract class AbstractDatabaseManagerTest {
         dbManager.executeUpdate(dbManager.getSQLDialect().dropTableIfExists(TEST_TABLE));
 
         // Création de la table avec une structure adaptée pour les tests
-        String columnDefinitions =
-                dbManager.getSQLDialect().getAutoIncrementPrimaryKeyColumn("id") + ", " +
-                        "name VARCHAR(100), " +
-                        "age INT, " +
-                        "email VARCHAR(100)";
+        String columnDefinitions = dbManager.getSQLDialect().getAutoIncrementPrimaryKeyColumn("id") + ", " +
+                "name VARCHAR(100), " + "age INT, " + "email VARCHAR(100)";
 
         dbManager.executeUpdate(dbManager.getSQLDialect().createTableIfNotExists(TEST_TABLE, columnDefinitions));
 
         // Insérer les données de test depuis le CSV
         List<Map<String, String>> testData = dataLoader.loadData();
         for (Map<String, String> row : testData) {
-            dbManager.executeUpdate(
-                    "INSERT INTO " + TEST_TABLE + " (name, age, email) VALUES (?, ?, ?)",
-                    row.get("name"),
-                    Integer.parseInt(row.get("age")),
-                    row.get("email")
+            dbManager.executeUpdate("INSERT INTO " + TEST_TABLE + " (name, age, email) VALUES (?, ?, ?)",
+                    row.get("name"), Integer.parseInt(row.get("age")), row.get("email")
             );
         }
     }
@@ -88,10 +82,7 @@ public abstract class AbstractDatabaseManagerTest {
     @Test
     public void testSelect() throws SQLException {
         // Tester une requête SELECT
-        List<Map<String, Object>> results = dbManager.executeQuery(
-                "SELECT * FROM " + TEST_TABLE + " WHERE age > ?",
-                25
-        );
+        List<Map<String, Object>> results = dbManager.executeQuery("SELECT * FROM " + TEST_TABLE + " WHERE age > ?", 25);
 
         // Vérifier que les résultats sont corrects
         assertNotNull(results);
@@ -110,20 +101,13 @@ public abstract class AbstractDatabaseManagerTest {
         String newName = "Updated Name";
         int id = 1;
 
-        int rowsAffected = dbManager.executeUpdate(
-                "UPDATE " + TEST_TABLE + " SET name = ? WHERE id = ?",
-                newName,
-                id
-        );
+        int rowsAffected = dbManager.executeUpdate("UPDATE " + TEST_TABLE + " SET name = ? WHERE id = ?", newName, id);
 
         // Vérifier que la mise à jour a réussi
         assertEquals(1, rowsAffected);
 
         // Vérifier que le nom a bien été mis à jour
-        List<Map<String, Object>> results = dbManager.executeQuery(
-                "SELECT name FROM " + TEST_TABLE + " WHERE id = ?",
-                id
-        );
+        List<Map<String, Object>> results = dbManager.executeQuery("SELECT name FROM " + TEST_TABLE + " WHERE id = ?", id);
 
         assertFalse(results.isEmpty());
         assertEquals(newName, results.get(0).get("name"));
@@ -135,27 +119,18 @@ public abstract class AbstractDatabaseManagerTest {
             dbManager.beginTransaction();
 
             // Ajouter un utilisateur
-            dbManager.executeUpdate(
-                    "INSERT INTO " + TEST_TABLE + " (name, age, email) VALUES (?, ?, ?)",
-                    "Test Transaction",
-                    30,
-                    "transaction@test.com"
+            dbManager.executeUpdate("INSERT INTO " + TEST_TABLE + " (name, age, email) VALUES (?, ?, ?)", "Test Transaction",
+                    30, "transaction@test.com"
             );
 
             // Mettre à jour un utilisateur
-            dbManager.executeUpdate(
-                    "UPDATE " + TEST_TABLE + " SET email = ? WHERE id = ?",
-                    "updated@test.com",
-                    1
-            );
+            dbManager.executeUpdate("UPDATE " + TEST_TABLE + " SET email = ? WHERE id = ?", "updated@test.com", 1);
 
             dbManager.commitTransaction();
 
             // Vérifier que les modifications ont été appliquées
-            List<Map<String, Object>> results = dbManager.executeQuery(
-                    "SELECT * FROM " + TEST_TABLE + " WHERE name = ?",
-                    "Test Transaction"
-            );
+            List<Map<String, Object>> results = dbManager.executeQuery("SELECT * FROM " + TEST_TABLE + " WHERE name = ?",
+                    "Test Transaction");
 
             assertFalse(results.isEmpty());
 

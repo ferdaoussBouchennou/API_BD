@@ -20,9 +20,6 @@ public class DBConfigLoader {
             System.out.println("Erreur lors du chargement des configurations: " + e.getMessage());
         }
     }
-    public String getProperty(String key) {
-        return properties.getProperty(key);
-    }
     public String getDefaultDatabaseType() {
         return properties.getProperty("default.database", "mysql");
     }
