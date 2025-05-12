@@ -58,7 +58,6 @@ public abstract class AbstractDatabaseManager implements DatabaseManager {
     public List<Map<String, Object>> executeQuery(String query, Object... params) throws SQLException {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
-        // Utiliser la connexion existante ou en créer une nouvelle
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -83,7 +82,9 @@ public abstract class AbstractDatabaseManager implements DatabaseManager {
 
                 // Ajouter chaque colonne dans la Map
                 for (int i = 1; i <= columnCount; i++) {
-                    String columnName = metaData.getColumnName(i);
+                    // Pour Oracle, utiliser getColumnLabel au lieu de getColumnName
+                    // et stocker en minuscules pour uniformiser avec les autres SGBD
+                    String columnName = metaData.getColumnLabel(i).toLowerCase();
                     Object value = rs.getObject(i);
                     row.put(columnName, value);
                 }
@@ -91,13 +92,12 @@ public abstract class AbstractDatabaseManager implements DatabaseManager {
                 resultList.add(row);
             }
         } finally {
-            // Fermer les ressources si nous ne sommes pas dans une transaction
+            // Fermer les ressources
             if (conn != null && conn != connection) {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
                 conn.close();
             } else {
-                // Fermer seulement le ResultSet et le Statement, pas la connexion
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
             }

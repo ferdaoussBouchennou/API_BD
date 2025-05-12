@@ -19,7 +19,7 @@ public class Main {
             DatabaseManagerFactory factory = new DatabaseManagerFactory(configLoader);
 
             // Obtenir le gestionnaire de base de données par défaut
-            DatabaseManager dbManager = factory.createDefaultDatabaseManager();
+            DatabaseManager dbManager = factory.createDatabaseManager("oracle");
             System.out.println("Connexion à la base de données établie.");
 
             // Créer une table de test si elle n'existe pas

@@ -6,14 +6,16 @@ package ma.ensa.db;
 public interface SQLDialect {
     /**
      * Retourne la requête SQL pour créer une table si elle n'existe pas
+     *
      * @param tableName Nom de la table
-     * @param columns Définition des colonnes
+     * @param columns   Définition des colonnes
      * @return Requête SQL adaptée au SGBD
      */
     String createTableIfNotExists(String tableName, String columns);
 
     /**
      * Retourne la requête SQL pour supprimer une table si elle existe
+     *
      * @param tableName Nom de la table
      * @return Requête SQL adaptée au SGBD
      */
@@ -21,6 +23,7 @@ public interface SQLDialect {
 
     /**
      * Retourne la requête SQL pour compter le nombre d'enregistrements
+     *
      * @param tableName Nom de la table
      * @return Requête SQL adaptée au SGBD
      */
@@ -28,8 +31,18 @@ public interface SQLDialect {
 
     /**
      * Retourne la déclaration d'une colonne auto-incrémentée pour une clé primaire
+     *
      * @param columnName Nom de la colonne
      * @return Déclaration SQL adaptée au SGBD
      */
     String getAutoIncrementPrimaryKeyColumn(String columnName);
+
+    /**
+     * Indique si le SGBD met les noms de colonnes en majuscules par défaut
+     *
+     * @return true si les noms de colonnes sont en majuscules par défaut, false sinon
+     */
+    default boolean useUpperCaseColumnNames() {
+        return false;
+    }
 }

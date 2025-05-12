@@ -27,12 +27,22 @@ public class OracleDialect implements SQLDialect {
 
     @Override
     public String countAll(String tableName) {
-        return "SELECT COUNT(*) as count FROM " + tableName;
+        // Oracle renvoie COUNT(*) et non "count"
+        return "SELECT COUNT(*) as \"count\" FROM " + tableName;
     }
 
     @Override
     public String getAutoIncrementPrimaryKeyColumn(String columnName) {
         return columnName + " NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY";
+    }
+
+    /**
+     * Indique si le SGBD met les noms de colonnes en majuscules par défaut
+     * @return true si les noms de colonnes sont en majuscules par défaut, false sinon
+     */
+    @Override
+    public boolean useUpperCaseColumnNames() {
+        return true;
     }
 
 }
