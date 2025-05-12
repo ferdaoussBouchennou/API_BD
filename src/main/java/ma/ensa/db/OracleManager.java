@@ -13,6 +13,7 @@ public class OracleManager extends AbstractDatabaseManager {
     public OracleManager(String driver, String url, String username, String password) {
         super(url, username, password);
         this.driver = driver;
+        this.sqlDialect = new OracleDialect();
     }
 
     @Override

@@ -8,9 +8,10 @@ import java.sql.SQLException;
 public class MySQLManager extends AbstractDatabaseManager {
     private final String driver;
 
-    public MySQLManager(String driver,String url, String username, String password) {
+    public MySQLManager(String driver, String url, String username, String password) {
         super(url, username, password);
         this.driver = driver;
+        this.sqlDialect = new MySQLDialect();
     }
 
     @Override

@@ -21,6 +21,7 @@ public abstract class AbstractDatabaseManagerTest {
 
     protected DatabaseManager dbManager;
     protected CSVDataLoader dataLoader;
+    protected static final String TEST_TABLE = "test_users";
 
     /**
      * Méthode à implémenter par les sous-classes pour fournir le bon gestionnaire de DB
@@ -54,27 +55,23 @@ public abstract class AbstractDatabaseManagerTest {
     private void prepareDatabase() throws SQLException, IOException {
         dbManager.connect();
 
-        // Supprimer la table si elle existe
-        try {
-            dbManager.executeUpdate("DROP TABLE IF EXISTS test_users");
-        } catch (SQLException e) {
-            // Ignorer si la table n'existe pas
-        }
+        // Supprimer la table si elle existe et la recréer
+        dbManager.executeUpdate(dbManager.getSQLDialect().dropTableIfExists(TEST_TABLE));
 
-        // Créer la table (syntaxe compatible avec tous les SGBD)
-        dbManager.executeUpdate(
-                "CREATE TABLE test_users (" +
-                        "id INT PRIMARY KEY AUTO_INCREMENT, " +
+        // Création de la table avec une structure adaptée pour les tests
+        String columnDefinitions =
+                dbManager.getSQLDialect().getAutoIncrementPrimaryKeyColumn("id") + ", " +
                         "name VARCHAR(100), " +
                         "age INT, " +
-                        "email VARCHAR(100))"
-        );
+                        "email VARCHAR(100)";
+
+        dbManager.executeUpdate(dbManager.getSQLDialect().createTableIfNotExists(TEST_TABLE, columnDefinitions));
 
         // Insérer les données de test depuis le CSV
         List<Map<String, String>> testData = dataLoader.loadData();
         for (Map<String, String> row : testData) {
             dbManager.executeUpdate(
-                    "INSERT INTO test_users (name, age, email) VALUES (?, ?, ?)",
+                    "INSERT INTO " + TEST_TABLE + " (name, age, email) VALUES (?, ?, ?)",
                     row.get("name"),
                     Integer.parseInt(row.get("age")),
                     row.get("email")
@@ -92,7 +89,7 @@ public abstract class AbstractDatabaseManagerTest {
     public void testSelect() throws SQLException {
         // Tester une requête SELECT
         List<Map<String, Object>> results = dbManager.executeQuery(
-                "SELECT * FROM test_users WHERE age > ?",
+                "SELECT * FROM " + TEST_TABLE + " WHERE age > ?",
                 25
         );
 
@@ -114,7 +111,7 @@ public abstract class AbstractDatabaseManagerTest {
         int id = 1;
 
         int rowsAffected = dbManager.executeUpdate(
-                "UPDATE test_users SET name = ? WHERE id = ?",
+                "UPDATE " + TEST_TABLE + " SET name = ? WHERE id = ?",
                 newName,
                 id
         );
@@ -124,10 +121,11 @@ public abstract class AbstractDatabaseManagerTest {
 
         // Vérifier que le nom a bien été mis à jour
         List<Map<String, Object>> results = dbManager.executeQuery(
-                "SELECT name FROM test_users WHERE id = ?",
+                "SELECT name FROM " + TEST_TABLE + " WHERE id = ?",
                 id
         );
 
+        assertFalse(results.isEmpty());
         assertEquals(newName, results.get(0).get("name"));
     }
 
@@ -138,7 +136,7 @@ public abstract class AbstractDatabaseManagerTest {
 
             // Ajouter un utilisateur
             dbManager.executeUpdate(
-                    "INSERT INTO test_users (name, age, email) VALUES (?, ?, ?)",
+                    "INSERT INTO " + TEST_TABLE + " (name, age, email) VALUES (?, ?, ?)",
                     "Test Transaction",
                     30,
                     "transaction@test.com"
@@ -146,7 +144,7 @@ public abstract class AbstractDatabaseManagerTest {
 
             // Mettre à jour un utilisateur
             dbManager.executeUpdate(
-                    "UPDATE test_users SET email = ? WHERE id = ?",
+                    "UPDATE " + TEST_TABLE + " SET email = ? WHERE id = ?",
                     "updated@test.com",
                     1
             );
@@ -155,7 +153,7 @@ public abstract class AbstractDatabaseManagerTest {
 
             // Vérifier que les modifications ont été appliquées
             List<Map<String, Object>> results = dbManager.executeQuery(
-                    "SELECT * FROM test_users WHERE name = ?",
+                    "SELECT * FROM " + TEST_TABLE + " WHERE name = ?",
                     "Test Transaction"
             );
 
@@ -170,24 +168,28 @@ public abstract class AbstractDatabaseManagerTest {
     @Test
     public void testDelete() throws SQLException {
         // Compter le nombre d'utilisateurs au départ
-        List<Map<String, Object>> initialResults = dbManager.executeQuery("SELECT COUNT(*) as count FROM test_users");
+        List<Map<String, Object>> initialResults = dbManager.executeQuery(
+                dbManager.getSQLDialect().countAll(TEST_TABLE)
+        );
         int initialCount = ((Number)initialResults.get(0).get("count")).intValue();
 
         // Supprimer un utilisateur
         int id = 1;
-        int rowsAffected = dbManager.executeUpdate("DELETE FROM test_users WHERE id = ?", id);
+        int rowsAffected = dbManager.executeUpdate("DELETE FROM " + TEST_TABLE + " WHERE id = ?", id);
 
         // Vérifier que la suppression a réussi
         assertEquals(1, rowsAffected);
 
         // Vérifier que le nombre d'utilisateurs a diminué
-        List<Map<String, Object>> finalResults = dbManager.executeQuery("SELECT COUNT(*) as count FROM test_users");
+        List<Map<String, Object>> finalResults = dbManager.executeQuery(
+                dbManager.getSQLDialect().countAll(TEST_TABLE)
+        );
         int finalCount = ((Number)finalResults.get(0).get("count")).intValue();
 
         assertEquals(initialCount - 1, finalCount);
 
         // Vérifier que l'utilisateur n'existe plus
-        List<Map<String, Object>> results = dbManager.executeQuery("SELECT * FROM test_users WHERE id = ?", id);
+        List<Map<String, Object>> results = dbManager.executeQuery("SELECT * FROM " + TEST_TABLE + " WHERE id = ?", id);
         assertTrue(results.isEmpty());
     }
 }

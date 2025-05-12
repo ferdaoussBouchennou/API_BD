@@ -12,6 +12,7 @@ public class SQLServerManager extends AbstractDatabaseManager {
     public SQLServerManager(String driver, String url, String username, String password) {
         super(url, username, password);
         this.driver = driver;
+        this.sqlDialect = new SQLServerDialect();
     }
 
     @Override

@@ -20,4 +20,31 @@ public interface DatabaseManager {
     void commitTransaction() throws SQLException;
     /* Annule une transaction */
     void rollbackTransaction() throws SQLException;
+
+    /**
+     * Retourne le dialecte SQL associé à cette implémentation
+     * @return Le dialecte SQL
+     */
+    SQLDialect getSQLDialect();
+
+    /**
+     * Crée une table si elle n'existe pas déjà
+     * @param tableName Nom de la table
+     * @param columnDefinitions Définitions des colonnes (sans les parenthèses)
+     * @return Nombre de lignes affectées
+     * @throws SQLException En cas d'erreur SQL
+     */
+    default int createTableIfNotExists(String tableName, String columnDefinitions) throws SQLException {
+        return executeUpdate(getSQLDialect().createTableIfNotExists(tableName, columnDefinitions));
+    }
+
+    /**
+     * Supprime une table si elle existe
+     * @param tableName Nom de la table
+     * @return Nombre de lignes affectées
+     * @throws SQLException En cas d'erreur SQL
+     */
+    default int dropTableIfExists(String tableName) throws SQLException {
+        return executeUpdate(getSQLDialect().dropTableIfExists(tableName));
+    }
 }

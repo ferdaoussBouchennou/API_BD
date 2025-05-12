@@ -30,6 +30,11 @@ public abstract class AbstractDatabaseManager implements DatabaseManager {
     protected Connection connection;
 
     /**
+     * Le dialecte SQL spécifique à l'implémentation
+     */
+    protected SQLDialect sqlDialect;
+
+    /**
      * Constructeur avec paramètres pour initialiser les informations de connexion
      * @param url URL de connexion à la base de données
      * @param username Nom d'utilisateur
@@ -169,5 +174,10 @@ public abstract class AbstractDatabaseManager implements DatabaseManager {
             connection.setAutoCommit(true);
             System.out.println("Transaction annulée.");
         }
+    }
+
+    @Override
+    public SQLDialect getSQLDialect() {
+        return sqlDialect;
     }
 }

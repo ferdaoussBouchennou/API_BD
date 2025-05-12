@@ -8,104 +8,137 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Classe principale pour tester l'API de gestion de base de données
- */
 public class Main {
 
+    private static final String TABLE_NAME = "personnes";
+
     public static void main(String[] args) {
-        // Charger la configuration
-        DBConfigLoader configLoader = new DBConfigLoader("db.properties");
-        DatabaseManagerFactory factory = new DatabaseManagerFactory(configLoader);
-
-        // Utiliser la base de données par défaut
         try {
-            // Créer le gestionnaire de base de données
+            // Charger la configuration
+            DBConfigLoader configLoader = new DBConfigLoader("db.properties");
+            DatabaseManagerFactory factory = new DatabaseManagerFactory(configLoader);
+
+            // Obtenir le gestionnaire de base de données par défaut
             DatabaseManager dbManager = factory.createDefaultDatabaseManager();
+            System.out.println("Connexion à la base de données établie.");
 
-            // Test de connexion
-            System.out.println("Test de connexion à la base de données...");
-            dbManager.connect();
+            // Créer une table de test si elle n'existe pas
+            createTestTable(dbManager);
 
-            // Création d'une table de test si elle n'existe pas
-            System.out.println("\nCréation de la table de test si elle n'existe pas...");
-            dbManager.executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS users (" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                            "name VARCHAR(100), " +
-                            "age INT, " +
-                            "email VARCHAR(100))"
-            );
+            // Insérer des données de test
+            insertTestData(dbManager);
 
-            // Insertion de quelques données si nécessaire
-            System.out.println("\nInsertion de données de test...");
-            dbManager.executeUpdate(
-                    "INSERT INTO users (name, age, email) VALUES (?, ?, ?)",
-                    "Jean Dupont",
-                    35,
-                    "jean@example.com"
-            );
+            // Afficher toutes les données
+            displayAllData(dbManager);
 
-            dbManager.executeUpdate(
-                    "INSERT INTO users (name, age, email) VALUES (?, ?, ?)",
-                    "Marie Martin",
-                    28,
-                    "marie@example.com"
-            );
+            // Mettre à jour des données
+            updateData(dbManager);
 
-            // Exemple de requête SELECT
-            System.out.println("\nExécution d'une requête SELECT...");
-            List<Map<String, Object>> results = dbManager.executeQuery("SELECT * FROM users WHERE age > ?", 25);
+            // Afficher les données après mise à jour
+            displayAllData(dbManager);
 
-            // Afficher les résultats
-            System.out.println("Résultats:");
-            for (Map<String, Object> row : results) {
-                System.out.println(row);
-            }
+            // Supprimer des données
+            deleteData(dbManager);
 
-            // Exemple de requête UPDATE
-            System.out.println("\nExécution d'une requête UPDATE...");
-            int rowsAffected = dbManager.executeUpdate("UPDATE users SET name = ? WHERE id = ?", "Nouveau Nom", 1);
-            System.out.println("Nombre de lignes mises à jour: " + rowsAffected);
+            // Afficher les données après suppression
+            displayAllData(dbManager);
 
-            // Exemple de transaction
-            System.out.println("\nTest de transaction...");
-            dbManager.beginTransaction();
-
-            try {
-                dbManager.executeUpdate("INSERT INTO users (name, age, email) VALUES (?, ?, ?)",
-                        "Utilisateur Test",
-                        30,
-                        "test@example.com"
-                );
-
-                dbManager.executeUpdate("UPDATE users SET name = ? WHERE id = ?",
-                        "Nom Modifié",
-                        2
-                );
-
-                // Valider la transaction
-                dbManager.commitTransaction();
-                System.out.println("Transaction réussie!");
-            } catch (SQLException e) {
-                // Annuler la transaction en cas d'erreur
-                dbManager.rollbackTransaction();
-                System.err.println("Transaction annulée: " + e.getMessage());
-            }
-
-            // Vérifier les modifications après la transaction
-            System.out.println("\nVérification des données après la transaction:");
-            results = dbManager.executeQuery("SELECT * FROM users");
-            for (Map<String, Object> row : results) {
-                System.out.println(row);
-            }
+            // Test de transaction
+            testTransaction(dbManager);
 
             // Fermer la connexion
             dbManager.disconnect();
+            System.out.println("Connexion fermée avec succès.");
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println("Erreur: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private static void createTestTable(DatabaseManager dbManager) throws SQLException {
+        // Suppression de la table si elle existe déjà
+        dbManager.dropTableIfExists(TABLE_NAME);
+
+        // Création de la table
+        String columns = dbManager.getSQLDialect().getAutoIncrementPrimaryKeyColumn("id") + ", " +
+                "nom VARCHAR(100), " +
+                "age INT, " +
+                "email VARCHAR(100)";
+
+        dbManager.createTableIfNotExists(TABLE_NAME, columns);
+        System.out.println("Table " + TABLE_NAME + " créée avec succès.");
+    }
+
+    private static void insertTestData(DatabaseManager dbManager) throws SQLException {
+        String query = "INSERT INTO " + TABLE_NAME + " (nom, age, email) VALUES (?, ?, ?)";
+
+        // Insérer quelques enregistrements
+        dbManager.executeUpdate(query, "Ahmed Bennani", 28, "ahmed@mail.com");
+        dbManager.executeUpdate(query, "Khadija Alaoui", 34, "khadija@mail.com");
+        dbManager.executeUpdate(query, "Mehdi Tazi", 22, "mehdi@mail.com");
+
+        System.out.println("Données insérées avec succès.");
+    }
+
+    private static void displayAllData(DatabaseManager dbManager) throws SQLException {
+        String query = "SELECT * FROM " + TABLE_NAME;
+        List<Map<String, Object>> results = dbManager.executeQuery(query);
+
+        System.out.println("\n--- Données dans la table " + TABLE_NAME + " ---");
+        if (results.isEmpty()) {
+            System.out.println("Aucune donnée trouvée.");
+        } else {
+            for (Map<String, Object> row : results) {
+                System.out.println("ID: " + row.get("id") +
+                        ", Nom: " + row.get("nom") +
+                        ", Age: " + row.get("age") +
+                        ", Email: " + row.get("email"));
+            }
+        }
+        System.out.println("------------------------------------\n");
+    }
+
+    private static void updateData(DatabaseManager dbManager) throws SQLException {
+        String query = "UPDATE " + TABLE_NAME + " SET age = ? WHERE nom = ?";
+        int rowsAffected = dbManager.executeUpdate(query, 29, "Ahmed Bennani");
+
+        System.out.println(rowsAffected + " ligne(s) mise(s) à jour.");
+    }
+
+    private static void deleteData(DatabaseManager dbManager) throws SQLException {
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE nom = ?";
+        int rowsAffected = dbManager.executeUpdate(query, "Mehdi Tazi");
+
+        System.out.println(rowsAffected + " ligne(s) supprimée(s).");
+    }
+
+    private static void testTransaction(DatabaseManager dbManager) throws SQLException {
+        try {
+            // Démarrer une transaction
+            dbManager.beginTransaction();
+
+            // Insérer un nouvel enregistrement
+            dbManager.executeUpdate(
+                    "INSERT INTO " + TABLE_NAME + " (nom, age, email) VALUES (?, ?, ?)",
+                    "Nadia Mansouri", 31, "nadia@mail.com"
+            );
+
+            // Mettre à jour un enregistrement existant
+            dbManager.executeUpdate(
+                    "UPDATE " + TABLE_NAME + " SET email = ? WHERE nom = ?",
+                    "khadija.updated@mail.com", "Khadija Alaoui"
+            );
+
+            // Valider la transaction
+            dbManager.commitTransaction();
+            System.out.println("Transaction réussie.");
+
+        } catch (SQLException e) {
+            // Annuler la transaction en cas d'erreur
+            dbManager.rollbackTransaction();
+            System.err.println("Transaction annulée: " + e.getMessage());
+            throw e;
         }
     }
 }

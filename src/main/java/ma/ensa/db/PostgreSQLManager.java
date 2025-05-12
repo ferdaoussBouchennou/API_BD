@@ -11,6 +11,7 @@ public class PostgreSQLManager extends AbstractDatabaseManager {
     public PostgreSQLManager(String driver, String url, String username, String password) {
         super(url, username, password);
         this.driver = driver;
+        this.sqlDialect = new PostgreSQLDialect();
     }
 
     @Override
