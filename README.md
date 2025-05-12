@@ -86,6 +86,7 @@ import ma.ensa.util.DBConfigLoader;
 
 DBConfigLoader configLoader = new DBConfigLoader("db.properties");
 DatabaseManagerFactory factory = new DatabaseManagerFactory(configLoader);
+
 // Créer une instance pour un SGBD spécifique
 
 DatabaseManager dbManager = factory.createDatabaseManager("mysql");
@@ -95,7 +96,9 @@ DatabaseManager dbManager = factory.createDatabaseManager("postgresql");
 DatabaseManager dbManager = factory.createDatabaseManager("sqlserver");
 // ou
 DatabaseManager dbManager = factory.createDatabaseManager("oracle");
+
 // Ou utiliser le type par défaut configuré dans db.properties
+
 DatabaseManager defaultDbManager = factory.createDefaultDatabaseManager();
 # Connexion avec try-with-resources
 try (DatabaseManager dbManager = factory.createDatabaseManager("mysql")) {
