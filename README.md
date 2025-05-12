@@ -142,14 +142,17 @@ int rowsDeleted = dbManager.executeUpdate(deleteQuery, "Ahmed Bennani");
 String columns = dbManager.getSQLDialect().getAutoIncrementPrimaryKeyColumn("id") + ", " +"nom VARCHAR(100), " +"age INT, " +
 "email VARCHAR(100)";
 dbManager.createTableIfNotExists("TABLE_NAME", columns);
+
 // Suppression d'une table
 
 dbManager.dropTableIfExists("TABLE_NAME");
 # Gestion des transactions
 try {
+
 // Démarrer une transaction
 
 dbManager.beginTransaction();
+
 // Exécuter plusieurs opérations
 
 dbManager.executeUpdate("INSERT INTO TABLE_NAME (nom, age) VALUES (?, ?)", "Omar", 25);
@@ -159,6 +162,7 @@ dbManager.executeUpdate("UPDATE TABLE_NAME SET age = ? WHERE nom = ?", 35, "Ahme
 
 dbManager.commitTransaction();
 } catch (SQLException e) {
+
 // Annuler la transaction en cas d'erreur
 
 dbManager.rollbackTransaction();
