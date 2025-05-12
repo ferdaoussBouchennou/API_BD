@@ -126,10 +126,12 @@ System.out.println("ID: " + row.get("id") +
 
 String insertQuery = "INSERT INTO TABLE_NAME (nom, age, email) VALUES (?, ?, ?)";
 int rowsInserted = dbManager.executeUpdate(insertQuery, "Ahmed Bennani", 28, "ahmed@mail.com");
+
 // Mise à jour
 
 String updateQuery = "UPDATE TABLE_NAME SET age = ? WHERE nom = ?";
 int rowsUpdated = dbManager.executeUpdate(updateQuery, 29, "Ahmed Bennani");
+
 // Suppression
 
 String deleteQuery = "DELETE FROM TABLE_NAME WHERE nom = ?";
