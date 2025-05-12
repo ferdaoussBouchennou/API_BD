@@ -90,11 +90,17 @@ DatabaseManagerFactory factory = new DatabaseManagerFactory(configLoader);
 // Créer une instance pour un SGBD spécifique
 
 DatabaseManager dbManager = factory.createDatabaseManager("mysql");
+
 // ou
+
 DatabaseManager dbManager = factory.createDatabaseManager("postgresql");
+
 // ou
+
 DatabaseManager dbManager = factory.createDatabaseManager("sqlserver");
+
 // ou
+
 DatabaseManager dbManager = factory.createDatabaseManager("oracle");
 
 // Ou utiliser le type par défaut configuré dans db.properties
