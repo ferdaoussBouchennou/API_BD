@@ -83,9 +83,11 @@ import ma.ensa.db.DatabaseManagerFactory;
 import ma.ensa.util.DBConfigLoader;
 
 // Charger la configuration
+
 DBConfigLoader configLoader = new DBConfigLoader("db.properties");
 DatabaseManagerFactory factory = new DatabaseManagerFactory(configLoader);
 // Créer une instance pour un SGBD spécifique
+
 DatabaseManager dbManager = factory.createDatabaseManager("mysql");
 // ou
 DatabaseManager dbManager = factory.createDatabaseManager("postgresql");
@@ -104,6 +106,7 @@ try (DatabaseManager dbManager = factory.createDatabaseManager("mysql")) {
 String query = "SELECT * FROM TABLE_NAME";
 List<Map<String, Object>> results = dbManager.executeQuery(query);
 // Parcourir les résultats
+
 for (Map<String, Object> row : results) {
 System.out.println("ID: " + row.get("id") +
 ", Nom: " + row.get("nom") +
@@ -111,33 +114,42 @@ System.out.println("ID: " + row.get("id") +
 }
 # Exécution de requêtes INSERT, UPDATE ou DELETE
 // Insertion
+
 String insertQuery = "INSERT INTO TABLE_NAME (nom, age, email) VALUES (?, ?, ?)";
 int rowsInserted = dbManager.executeUpdate(insertQuery, "Ahmed Bennani", 28, "ahmed@mail.com");
 // Mise à jour
+
 String updateQuery = "UPDATE TABLE_NAME SET age = ? WHERE nom = ?";
 int rowsUpdated = dbManager.executeUpdate(updateQuery, 29, "Ahmed Bennani");
 // Suppression
+
 String deleteQuery = "DELETE FROM TABLE_NAME WHERE nom = ?";
 int rowsDeleted = dbManager.executeUpdate(deleteQuery, "Ahmed Bennani");
 # Création et suppression de tables
 // Création d'une table
+
 String columns = dbManager.getSQLDialect().getAutoIncrementPrimaryKeyColumn("id") + ", " +"nom VARCHAR(100), " +"age INT, " +
 "email VARCHAR(100)";
 dbManager.createTableIfNotExists("TABLE_NAME", columns);
 // Suppression d'une table
+
 dbManager.dropTableIfExists("TABLE_NAME");
 # Gestion des transactions
 try {
 // Démarrer une transaction
+
 dbManager.beginTransaction();
 // Exécuter plusieurs opérations
+
 dbManager.executeUpdate("INSERT INTO TABLE_NAME (nom, age) VALUES (?, ?)", "Omar", 25);
 dbManager.executeUpdate("UPDATE TABLE_NAME SET age = ? WHERE nom = ?", 35, "Ahmed");
 
 // Valider la transaction si tout va bien
+
 dbManager.commitTransaction();
 } catch (SQLException e) {
 // Annuler la transaction en cas d'erreur
+
 dbManager.rollbackTransaction();
 throw e;
 }
