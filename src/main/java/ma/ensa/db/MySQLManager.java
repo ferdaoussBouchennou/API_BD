@@ -3,7 +3,6 @@ package ma.ensa.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 /* Implémentation de DatabaseManager pour MySQL */
 public class MySQLManager extends AbstractDatabaseManager {
     private final String driver;

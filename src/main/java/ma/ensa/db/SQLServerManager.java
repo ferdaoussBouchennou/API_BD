@@ -1,12 +1,9 @@
 package ma.ensa.db;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 /* Implémentation de DatabaseManager pour SQL Server */
 public class SQLServerManager extends AbstractDatabaseManager {
-
     private final String driver;
 
     public SQLServerManager(String driver, String url, String username, String password) {
@@ -14,7 +11,6 @@ public class SQLServerManager extends AbstractDatabaseManager {
         this.driver = driver;
         this.sqlDialect = new SQLServerDialect();
     }
-
     @Override
     public Connection connect() throws SQLException {
         try {

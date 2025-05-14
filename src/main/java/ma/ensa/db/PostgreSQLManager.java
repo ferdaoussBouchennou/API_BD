@@ -1,9 +1,7 @@
 package ma.ensa.db;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 /* Implémentation de DatabaseManager pour PostgreSQL */
 public class PostgreSQLManager extends AbstractDatabaseManager {
     private final String driver;
@@ -13,7 +11,6 @@ public class PostgreSQLManager extends AbstractDatabaseManager {
         this.driver = driver;
         this.sqlDialect = new PostgreSQLDialect();
     }
-
     @Override
     public Connection connect() throws SQLException {
         try {

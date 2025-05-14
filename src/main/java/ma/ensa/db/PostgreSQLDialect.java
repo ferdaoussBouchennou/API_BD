@@ -1,8 +1,6 @@
 package ma.ensa.db;
 
-/**
- * Implémentation du dialecte SQL pour PostgreSQL
- */
+/*Implémentation du dialecte SQL pour PostgreSQL*/
 public class PostgreSQLDialect implements SQLDialect {
 
     @Override

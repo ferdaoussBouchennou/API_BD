@@ -1,8 +1,6 @@
 package ma.ensa.db;
 
-/**
- * Implémentation du dialecte SQL pour MySQL
- */
+/*Implémentation du dialecte SQL pour MySQL*/
 public class MySQLDialect implements SQLDialect {
 
     @Override

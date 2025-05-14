@@ -1,22 +1,14 @@
 package ma.ensa.db;
 
 import ma.ensa.util.DBConfigLoader;
-
 /* Fabrique pour créer des instances de DatabaseManager selon le type demandé (MySQL, PostgreSQL, SQLServer) */
 public class DatabaseManagerFactory {
-
     private final DBConfigLoader configLoader;
 
     public DatabaseManagerFactory(DBConfigLoader configLoader) {
         this.configLoader = configLoader;
     }
-
-    /**
-     * Crée un DatabaseManager selon le type spécifié
-     * @param dbType Type de base de données (mysql, postgresql, sqlserver)
-     * @return L'instance de DatabaseManager correspondante
-     * @throws IllegalArgumentException si le type de base de données n'est pas supporté
-     */
+    /** Crée un DatabaseManager selon le type spécifié*/
     public DatabaseManager createDatabaseManager(String dbType) {
         String[] dbInfo = configLoader.getDatabaseInfo(dbType);
 
@@ -35,11 +27,7 @@ public class DatabaseManagerFactory {
                 throw new IllegalArgumentException("Type de base de données non supporté: " + dbType);
         }
     }
-
-    /**
-     * Crée un DatabaseManager pour le type de base de données par défaut
-     * @return L'instance de DatabaseManager correspondante
-     */
+    /*Crée un DatabaseManager pour le type de base de données par défaut*/
     public DatabaseManager createDefaultDatabaseManager() {
         String defaultDbType = configLoader.getDefaultDatabaseType();
         return createDatabaseManager(defaultDbType);

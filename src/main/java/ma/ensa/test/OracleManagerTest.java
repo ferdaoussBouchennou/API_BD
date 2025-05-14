@@ -4,9 +4,7 @@ import ma.ensa.db.DatabaseManager;
 import ma.ensa.db.DatabaseManagerFactory;
 import ma.ensa.util.DBConfigLoader;
 
-/**
- * Classe de test pour le gestionnaire Oracle
- */
+/*Classe de test pour le gestionnaire Oracle*/
 public class OracleManagerTest extends AbstractDatabaseManagerTest {
 
     @Override

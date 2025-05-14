@@ -4,9 +4,7 @@ import ma.ensa.db.DatabaseManager;
 import ma.ensa.db.DatabaseManagerFactory;
 import ma.ensa.util.DBConfigLoader;
 
-/**
- * Classe de test pour le gestionnaire MySQL
- */
+/*Classe de test pour le gestionnaire MySQL*/
 public class MySQLManagerTest extends AbstractDatabaseManagerTest {
 
     @Override

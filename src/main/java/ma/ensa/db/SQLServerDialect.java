@@ -1,8 +1,6 @@
 package ma.ensa.db;
 
-/**
- * Implémentation du dialecte SQL pour SQL Server
- */
+/*Implémentation du dialecte SQL pour SQL Server*/
 public class SQLServerDialect implements SQLDialect {
 
     @Override
@@ -12,7 +10,6 @@ public class SQLServerDialect implements SQLDialect {
                 "CREATE TABLE " + tableName + " (" + columns + ") " +
                 "END";
     }
-
     @Override
     public String dropTableIfExists(String tableName) {
         return "IF OBJECT_ID('" + tableName + "', 'U') IS NOT NULL DROP TABLE " + tableName;
@@ -22,7 +19,6 @@ public class SQLServerDialect implements SQLDialect {
     public String countAll(String tableName) {
         return "SELECT COUNT(*) as count FROM " + tableName;
     }
-
     @Override
     public String getAutoIncrementPrimaryKeyColumn(String columnName) {
         return columnName + " INT IDENTITY(1,1) PRIMARY KEY";

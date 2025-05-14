@@ -4,9 +4,7 @@ import ma.ensa.db.DatabaseManager;
 import ma.ensa.db.DatabaseManagerFactory;
 import ma.ensa.util.DBConfigLoader;
 
-/**
- * Classe de test pour le gestionnaire PostgreSQL
- */
+/*Classe de test pour le gestionnaire PostgreSQL*/
 public class PostgreSQLManagerTest extends AbstractDatabaseManagerTest {
 
     @Override

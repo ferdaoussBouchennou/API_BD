@@ -1,12 +1,8 @@
 package ma.ensa.db;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-/**
- * Implémentation de DatabaseManager pour Oracle
- */
+/*Implémentation de DatabaseManager pour Oracle*/
 public class OracleManager extends AbstractDatabaseManager {
     private final String driver;
 
@@ -15,7 +11,6 @@ public class OracleManager extends AbstractDatabaseManager {
         this.driver = driver;
         this.sqlDialect = new OracleDialect();
     }
-
     @Override
     public Connection connect() throws SQLException {
         try {

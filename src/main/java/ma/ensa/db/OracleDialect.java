@@ -1,10 +1,6 @@
 package ma.ensa.db;
-
-/**
- * Implémentation du dialecte SQL pour Oracle
- */
+/*Implémentation du dialecte SQL pour Oracle*/
 public class OracleDialect implements SQLDialect {
-
     @Override
     public String createTableIfNotExists(String tableName, String columns) {
         return "BEGIN " +
@@ -14,7 +10,6 @@ public class OracleDialect implements SQLDialect {
                 "IF SQLCODE = -955 THEN NULL; ELSE RAISE; END IF; " +
                 "END;";
     }
-
     @Override
     public String dropTableIfExists(String tableName) {
         return "BEGIN " +
@@ -24,25 +19,18 @@ public class OracleDialect implements SQLDialect {
                 "IF SQLCODE != -942 THEN RAISE; END IF; " +
                 "END;";
     }
-
     @Override
     public String countAll(String tableName) {
         // Oracle renvoie COUNT(*) et non "count"
         return "SELECT COUNT(*) as \"count\" FROM " + tableName;
     }
-
     @Override
     public String getAutoIncrementPrimaryKeyColumn(String columnName) {
         return columnName + " NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY";
     }
-
-    /**
-     * Indique si le SGBD met les noms de colonnes en majuscules par défaut
-     * @return true si les noms de colonnes sont en majuscules par défaut, false sinon
-     */
+    /*Indique si le SGBD met les noms de colonnes en majuscules par défaut*/
     @Override
     public boolean useUpperCaseColumnNames() {
         return true;
     }
-
 }

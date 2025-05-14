@@ -1,10 +1,8 @@
 package ma.ensa.util;
 
 import lombok.Getter;
-
 import java.io.InputStream;
 import java.util.Properties;
-
 @Getter
 public class DBConfigLoader {
     private Properties properties;

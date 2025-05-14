@@ -13,10 +13,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Classe de test abstraite pour les gestionnaires de base de données
- * Les classes de test spécifiques pour chaque SGBD étendront cette classe
- */
+/*Classe de test abstraite pour les gestionnaires de base de données. Les classes de test spécifiques pour chaque SGBD étendront
+cette classe*/
 public abstract class AbstractDatabaseManagerTest {
 
     protected DatabaseManager dbManager;
@@ -24,11 +22,8 @@ public abstract class AbstractDatabaseManagerTest {
     protected static final String TEST_TABLE = "test_users";
 
     /**
-     * Méthode à implémenter par les sous-classes pour fournir le bon gestionnaire de DB
-     * @return Une instance de DatabaseManager pour le type spécifique à tester
-     */
+     * Méthode à implémenter par les sous-classes pour fournir le bon gestionnaire de DB*/
     protected abstract DatabaseManager createDatabaseManager() throws Exception;
-
     @BeforeEach
     public void setUp() throws Exception {
         // Créer le gestionnaire de base de données approprié
@@ -49,9 +44,7 @@ public abstract class AbstractDatabaseManagerTest {
         }
     }
 
-    /**
-     * Prépare la base de données pour les tests (création de table, insertion de données)
-     */
+    /*Prépare la base de données pour les tests (création de table, insertion de données)*/
     private void prepareDatabase() throws SQLException, IOException {
         dbManager.connect();
 
