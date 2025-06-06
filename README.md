@@ -1,14 +1,10 @@
-Voici une version ajustée du README avec tout le code mis en forme à l'aide de blocs de code Markdown (` ```java ` ou ` ```properties `, selon le cas). Cela améliore la lisibilité et le rendu sur des plateformes comme GitHub :
-
----
-
 # **Bibliothèque de Gestion de Bases de Données Java**
 
 Cette bibliothèque offre une interface unifiée pour gérer les connexions et les opérations avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, SQL Server et Oracle).
 
 ---
 
-## 🚀 Fonctionnalités
+## Fonctionnalités
 
 * Interface unique et cohérente pour différents SGBD
 * Gestion des connexions
@@ -19,14 +15,14 @@ Cette bibliothèque offre une interface unifiée pour gérer les connexions et l
 
 ---
 
-## 📦 Prérequis
+## Prérequis
 
 * Drivers JDBC pour les bases de données que vous souhaitez utiliser
 * Maven
 
 ---
 
-## 🔧 Installation
+## Installation
 
 ### 1. Ajoutez les drivers JDBC nécessaires dans `pom.xml`
 
@@ -83,7 +79,7 @@ Cette bibliothèque offre une interface unifiée pour gérer les connexions et l
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 Créez un fichier `db.properties` :
 
@@ -118,7 +114,7 @@ oracle.password=votre_mot_de_passe
 
 ---
 
-## 🧪 Utilisation
+## Utilisation
 
 ### Création d'une instance de gestionnaire de base de données
 
@@ -211,7 +207,5 @@ try {
     throw e;
 }
 ```
-
----
 
 
