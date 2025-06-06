@@ -62,9 +62,11 @@ avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, S
 2. Créez un fichier de configuration **db.properties**
 
 **Type de base de données par défaut**
+
 default.database=mysql
 
 **Configuration MySQL**
+
 mysql.driver=com.mysql.cj.jdbc.Driver
 
 mysql.url=jdbc:mysql://localhost:3306/nom_base_de_donnees
@@ -74,6 +76,7 @@ mysql.username=votre_utilisateur
 mysql.password=votre_mot_de_passe
 
 **Configuration PostgreSQL**
+
 postgresql.driver=org.postgresql.Driver
 
 postgresql.url=jdbc:postgresql://localhost:5432/nom_base_de_donnees
@@ -83,6 +86,7 @@ postgresql.username=votre_utilisateur
 postgresql.password=votre_mot_de_passe
 
 **Configuration SQL Server**
+
 sqlserver.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
 
 sqlserver.url=jdbc:sqlserver://localhost:1433;databaseName=nom_base_de_donnees;encrypt=true;trustServerCertificate=true
@@ -92,6 +96,7 @@ sqlserver.username=votre_utilisateur
 sqlserver.password=votre_mot_de_passe
 
 **Configuration Oracle**
+
 oracle.driver=oracle.jdbc.OracleDriver
 
 oracle.url=jdbc:oracle:thin:@localhost:1521:XE
@@ -102,6 +107,7 @@ oracle.password=votre_mot_de_passe
 
 # Utilisation
 **Création d'une instance de gestionnaire de base de données**
+
 import ma.ensa.db.DatabaseManager;
 
 import ma.ensa.db.DatabaseManagerFactory;
