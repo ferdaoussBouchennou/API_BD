@@ -66,8 +66,11 @@ default.database=mysql
 
 # Configuration MySQL
 mysql.driver=com.mysql.cj.jdbc.Driver
+
 mysql.url=jdbc:mysql://localhost:3306/nom_base_de_donnees
+
 mysql.username=votre_utilisateur
+
 mysql.password=votre_mot_de_passe
 
 # Configuration PostgreSQL
