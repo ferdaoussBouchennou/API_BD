@@ -2,7 +2,7 @@
 Cette bibliothèque offre une interface unifiée pour gérer les connexions et les opérations 
 avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, SQL Server et Oracle).
 
-**Fonctionnalités**
+# Fonctionnalités
 - Interface unique et cohérente pour différents SGBD
 - Gestion des connexions
 - Exécution de requêtes SQL (SELECT, INSERT, UPDATE, DELETE)
@@ -10,12 +10,12 @@ avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, S
 - Dialectes SQL spécifiques pour chaque SGBD
 - Gestion des erreurs standardisée
 
-**Prérequis**
+# Prérequis
 - Drivers JDBC pour les bases de données que vous souhaitez utiliser
 - Maven
 
-**Installation**
-1. # Ajoutez les drivers JDBC nécessaires
+# Installation
+**1. Ajoutez les drivers JDBC nécessaires** 
    
    **MySQL**
    
@@ -49,7 +49,7 @@ avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, S
    <version>23.8.0.25.04</version>
 </dependency>
 
-3. # Ajoutez le JAR directement au classpath de votre projet :
+**2. Ajoutez le JAR directement au classpath de votre projet :**
    
 **Eclipse :** Clic droit sur le projet > Properties > Java Build Path > Libraries > Add External JARs
 
@@ -57,14 +57,14 @@ avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, S
 
 **NetBeans :** Clic droit sur le projet > Properties > Libraries > Add JAR/Folder
 
-**Configuration**
+# Configuration
 1. Créez une base de donnee manuellement dans le SGBD spécifique
 2. Créez un fichier de configuration **db.properties**
 
-# Type de base de données par défaut
+**Type de base de données par défaut**
 default.database=mysql
 
-# Configuration MySQL
+**Configuration MySQL**
 mysql.driver=com.mysql.cj.jdbc.Driver
 
 mysql.url=jdbc:mysql://localhost:3306/nom_base_de_donnees
@@ -73,33 +73,45 @@ mysql.username=votre_utilisateur
 
 mysql.password=votre_mot_de_passe
 
-# Configuration PostgreSQL
+**Configuration PostgreSQL**
 postgresql.driver=org.postgresql.Driver
+
 postgresql.url=jdbc:postgresql://localhost:5432/nom_base_de_donnees
+
 postgresql.username=votre_utilisateur
+
 postgresql.password=votre_mot_de_passe
 
-# Configuration SQL Server
+**Configuration SQL Server**
 sqlserver.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+
 sqlserver.url=jdbc:sqlserver://localhost:1433;databaseName=nom_base_de_donnees;encrypt=true;trustServerCertificate=true
+
 sqlserver.username=votre_utilisateur
+
 sqlserver.password=votre_mot_de_passe
 
-# Configuration Oracle
+**Configuration Oracle**
 oracle.driver=oracle.jdbc.OracleDriver
+
 oracle.url=jdbc:oracle:thin:@localhost:1521:XE
+
 oracle.username=votre_utilisateur
+
 oracle.password=votre_mot_de_passe
 
-**Utilisation**
-# Création d'une instance de gestionnaire de base de données
+# Utilisation
+**Création d'une instance de gestionnaire de base de données**
 import ma.ensa.db.DatabaseManager;
+
 import ma.ensa.db.DatabaseManagerFactory;
+
 import ma.ensa.util.DBConfigLoader;
 
 // Charger la configuration
 
 DBConfigLoader configLoader = new DBConfigLoader("db.properties");
+
 DatabaseManagerFactory factory = new DatabaseManagerFactory(configLoader);
 
 // Créer une instance pour un SGBD spécifique
@@ -121,12 +133,14 @@ DatabaseManager dbManager = factory.createDatabaseManager("oracle");
 // Ou utiliser le type par défaut configuré dans db.properties
 
 DatabaseManager defaultDbManager = factory.createDefaultDatabaseManager();
-# Connexion avec try-with-resources
+
+**Connexion avec try-with-resources**
 try (DatabaseManager dbManager = factory.createDatabaseManager("mysql")) {
 // Toutes vos opérations de base de données
 // La connexion sera fermée automatiquement à la fin du bloc
 }
-# Exécution de requêtes SELECT
+
+**Exécution de requêtes SELECT**
 String query = "SELECT * FROM TABLE_NAME";
 List<Map<String, Object>> results = dbManager.executeQuery(query);
 // Parcourir les résultats
@@ -136,7 +150,7 @@ System.out.println("ID: " + row.get("id") +
 ", Nom: " + row.get("nom") +
 ", Age: " + row.get("age"));
 }
-# Exécution de requêtes INSERT, UPDATE ou DELETE
+**Exécution de requêtes INSERT, UPDATE ou DELETE**
 // Insertion
 
 String insertQuery = "INSERT INTO TABLE_NAME (nom, age, email) VALUES (?, ?, ?)";
@@ -151,7 +165,7 @@ int rowsUpdated = dbManager.executeUpdate(updateQuery, 29, "Ahmed Bennani");
 
 String deleteQuery = "DELETE FROM TABLE_NAME WHERE nom = ?";
 int rowsDeleted = dbManager.executeUpdate(deleteQuery, "Ahmed Bennani");
-# Création et suppression de tables
+**Création et suppression de tables**
 // Création d'une table
 
 String columns = dbManager.getSQLDialect().getAutoIncrementPrimaryKeyColumn("id") + ", " +"nom VARCHAR(100), " +"age INT, " +
@@ -161,7 +175,7 @@ dbManager.createTableIfNotExists("TABLE_NAME", columns);
 // Suppression d'une table
 
 dbManager.dropTableIfExists("TABLE_NAME");
-# Gestion des transactions
+**Gestion des transactions**
 try {
 
 // Démarrer une transaction
