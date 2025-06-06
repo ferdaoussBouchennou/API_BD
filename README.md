@@ -16,60 +16,42 @@ avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, S
 
 **Installation**
 1. # Ajoutez les drivers JDBC nécessaires
+   
    **MySQL**
    
 <dependency>
-
    <groupId>com.mysql</groupId>
-   
    <artifactId>mysql-connector-j</artifactId>
-   
    <version>9.3.0</version>
-   
 </dependency>
 
    **PostgreSQL**
    
 <dependency>
-  
    <groupId>org.postgresql</groupId>
-   
    <artifactId>postgresql</artifactId>
-   
    <version>42.7.5</version>
-   
 </dependency>
 
    **SQL Server**
 
 <dependency>
-  
    <groupId>com.microsoft.sqlserver</groupId>
-   
    <artifactId>mssql-jdbc</artifactId>
-   
    <version>12.10.0.jre11</version>
-   
 </dependency>
-
    **Oracle**
    
 <dependency>
-  
    <groupId>com.oracle.database.jdbc</groupId>
-   
    <artifactId>ojdbc8</artifactId>
-   
    <version>23.8.0.25.04</version>
-   
 </dependency>
 
 3. # Ajoutez le JAR directement au classpath de votre projet :
    
 **Eclipse :** Clic droit sur le projet > Properties > Java Build Path > Libraries > Add External JARs
-
 **IntelliJ IDEA :** File > Project Structure > Libraries > + > Java
-
 **NetBeans :** Clic droit sur le projet > Properties > Libraries > Add JAR/Folder
 
 **Configuration**
