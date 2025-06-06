@@ -40,6 +40,7 @@ avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, S
    <artifactId>mssql-jdbc</artifactId>
    <version>12.10.0.jre11</version>
 </dependency>
+
    **Oracle**
    
 <dependency>
@@ -51,7 +52,9 @@ avec différents systèmes de gestion de bases de données (MySQL, PostgreSQL, S
 3. # Ajoutez le JAR directement au classpath de votre projet :
    
 **Eclipse :** Clic droit sur le projet > Properties > Java Build Path > Libraries > Add External JARs
+
 **IntelliJ IDEA :** File > Project Structure > Libraries > + > Java
+
 **NetBeans :** Clic droit sur le projet > Properties > Libraries > Add JAR/Folder
 
 **Configuration**
